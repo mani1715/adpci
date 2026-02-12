@@ -1,0 +1,91 @@
+# ==============================
+# IDE / Editors
+# ==============================
+.idea/
+.vscode/
+.DS_Store
+
+# ==============================
+# Node / Frontend
+# ==============================
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+.yarn/install-state.gz
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ==============================
+# Environment Files
+# ==============================
+.env
+.env.*
+*.env
+*token.json*
+*credentials.json*
+
+# ==============================
+# Python
+# ==============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+venv/
+.venv/
+.ipynb_checkpoints/
+
+# ==============================
+# ML Models & Large Files
+# ==============================
+
+# Model folders
+ml_models/
+backend/ml/
+backend/ml_models/
+
+# Model artifacts
+*.pkl
+*.joblib
+*.h5
+*.model
+*.onnx
+
+# Large datasets
+*.csv
+*.xlsx
+*.xls
+
+# Model metadata
+*.json
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.pack
+
+# ==============================
+# Build / Cache
+# ==============================
+.cache/
+.vercel/
+
+# ==============================
+# Misc
+# ==============================
+*.pem
+dump.rdb
