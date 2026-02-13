@@ -35,11 +35,11 @@ MODEL_PATH = "artifact_wrapper.pkl"
 if not os.path.exists(MODEL_PATH):
     print("Downloading model from HuggingFace...")
     r = requests.get(MODEL_URL)
-r.raise_for_status()
-
+    r.raise_for_status()
     with open(MODEL_PATH, "wb") as f:
         f.write(r.content)
     print("Model downloaded successfully.")
+
 
 # Load the model
 model = joblib.load(MODEL_PATH)
@@ -325,61 +325,56 @@ async def get_current_aqi():
 async def get_forecast():
     try:
         aqi_data = await get_current_aqi()
-        
-       pred_24 = model.predict([[aqi_data.aqi]])[0]
 
-forecast_result = {
-    "aqi_24h": float(pred_24),
-    "aqi_48h": float(pred_24 + 10),
-    "aqi_72h": float(pred_24 + 20),
-    "trend": "stable",
-    "confidence": 0.85,
-    "confidence_level": "High",
-    "confidence_explanation": "Prediction based on trained ML model",
-    "factors": {},
-    "prediction_type": "ml",
-    "model_version": "v1.0",
-    "explanation": "Forecast generated using deployed HuggingFace model",
-    "weather_conditions": {}
-}
+        pred_24 = model.predict([[aqi_data.aqi]])[0]
 
-        )
-        
+        forecast_result = {
+            "aqi_24h": float(pred_24),
+            "aqi_48h": float(pred_24 + 10),
+            "aqi_72h": float(pred_24 + 20),
+            "trend": "stable",
+            "confidence": 0.85,
+            "confidence_level": "High",
+            "confidence_explanation": "Prediction based on trained ML model",
+            "factors": {},
+            "prediction_type": "ml",
+            "model_version": "v1.0",
+            "explanation": "Forecast generated using deployed HuggingFace model",
+            "weather_conditions": {}
+        }
+
         return ForecastResponse(**forecast_result)
+
     except Exception as e:
         logger.error(f"Error generating forecast: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to generate forecast")
 
+
 @api_router.get("/aqi/sources", response_model=SourceContribution)
 async def get_pollution_sources():
     try:
-        aqi_data = await get_current_aqi()
-        
-       return SourceContribution(
-    contributions={
-        "traffic": 40,
-        "industry": 25,
-        "construction": 20,
-        "stubble_burning": 10,
-        "other": 5
-    },
-    dominant_source="traffic",
-    confidence=0.8,
-    confidence_level="High",
-    confidence_explanation="Simulated distribution",
-    factors_considered={},
-    prediction_type="simulation",
-    model_version="v1.0",
-    explanation="Source attribution simulated (ML model not deployed)",
-    pollutant_indicators={}
-)
-
+        return SourceContribution(
+            contributions={
+                "traffic": 40,
+                "industry": 25,
+                "construction": 20,
+                "stubble_burning": 10,
+                "other": 5
+            },
+            dominant_source="traffic",
+            confidence=0.8,
+            confidence_level="High",
+            confidence_explanation="Simulated distribution",
+            factors_considered={},
+            prediction_type="simulation",
+            model_version="v1.0",
+            explanation="Source attribution simulated (ML model not deployed)",
+            pollutant_indicators={}
         )
-        
-        return SourceContribution(**result)
     except Exception as e:
         logger.error(f"Error getting sources: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to get pollution sources")
+
 
 @api_router.post("/reports", response_model=PollutionReport)
 async def create_report(report: PollutionReportCreate):
@@ -674,15 +669,16 @@ async def get_health_advisory(aqi: Optional[float] = None) -> HealthAdvisory:
 @api_router.get("/seasonal-outlook")
 async def get_seasonal_outlook() -> SeasonalOutlook:
     """Get seasonal pollution outlook based on historical patterns"""
-return SeasonalOutlook(
-    current_month=datetime.now().month,
-    current_month_name=datetime.now().strftime("%B"),
-    monthly_patterns={},
-    high_risk_season=True,
-    high_risk_months=["October", "November"],
-    low_risk_months=["July", "August"],
-    current_outlook="Pollution levels expected to rise in winter season"
-)
+    return SeasonalOutlook(
+        current_month=datetime.now().month,
+        current_month_name=datetime.now().strftime("%B"),
+        monthly_patterns={},
+        high_risk_season=True,
+        high_risk_months=["October", "November"],
+        low_risk_months=["July", "August"],
+        current_outlook="Pollution levels expected to rise in winter season"
+    )
+
 
 
 async def get_gemini_response(prompt: str, fallback: str = "Analysis unavailable") -> str:
