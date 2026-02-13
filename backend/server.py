@@ -1,17 +1,8 @@
 import sys
 import os
-import requests
 
-MODEL_URL = "https://huggingface.co/mani1715/aqi-prediction-model/resolve/main/artifact_wrapper.pkl"
-MODEL_PATH = "artifact_wrapper.pkl"
 
-# Download model if not exists
-if not os.path.exists(MODEL_PATH):
-    print("Downloading model from Hugging Face...")
-    r = requests.get(MODEL_URL)
-    with open(MODEL_PATH, "wb") as f:
-        f.write(r.content)
-    print("Model downloaded successfully.")
+
 # Add project root to Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -29,9 +20,7 @@ from datetime import datetime, timezone
 import aiohttp
 import bcrypt
 from backend.utils.email_service import send_report_confirmation, send_status_update
-
 from ml_models.aqi_inference import load_ensemble, predict_with_uncertainty
-
 
 
 
@@ -45,6 +34,7 @@ load_dotenv(ROOT_DIR / '.env')
 # ---------------------------
 # LOAD AQI ENSEMBLE MODELS
 # ---------------------------
+
 
 
 
